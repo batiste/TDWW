@@ -1,2 +1,2 @@
 all:
-	g++ *.h *.cpp -o DWWE
+	g++ *.h *.cpp -lSDL2 -lSDL2main -o DWWE
