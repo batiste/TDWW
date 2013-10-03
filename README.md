@@ -1,7 +1,5 @@
 DWWE
 ====
+(The Dead Will Walk)
 
-The Dead Will Walk
-----
-
-An open-source zombie apocalypse roguelike-like currently <i>very</i> early in development.
+An open-source zombie apocalypse roguelike-like (graphical) currently <i>very</i> early in development using C++/SDL/OpenGL.
