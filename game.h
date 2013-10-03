@@ -2,6 +2,7 @@
 #define _GAME_H
 
 #include "base.h"
+#include "opengl.h"
 
 class GameState;
 
