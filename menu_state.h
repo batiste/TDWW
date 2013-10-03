@@ -2,6 +2,7 @@
 #define _MENU_STATE_H
 
 #include "game_state.h"
+#include "texture.h"
 
 class MenuState : public GameState {
 public:
@@ -14,7 +15,7 @@ public:
 	void update();
 	void render();
 private:
-
+	Texture tex;
 };
 
 #endif

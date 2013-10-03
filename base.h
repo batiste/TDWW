@@ -10,12 +10,51 @@
 
 #if defined __WINDOWS__
 #include <SDL.h>
+#include <SDL_image.h>
 #elif defined __gnu_linux__
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #endif
+
+//Basic classes
+template< typename T >
+class Vec2 {
+public:
+	Vec2() {
+		Vec2( 0, 0, 0, 0 );
+	}
+	Vec2( T x, T y ) {
+		this->x = x;
+		this->y = y;
+	}
+	
+	T x, y;
+};
+
+template< typename T >
+class Rect {
+public:
+	Rect() {
+		Rect( 0, 0, 0, 0 );
+	}
+	Rect( T x, T y, T w, T h ) {
+		this->x = x;
+		this->y = y;
+		this->w = w;
+		this->h = h;
+	}
+	
+	T x, y, w, h;
+};
 
 //Typedefs
 typedef unsigned int uint;
+
+typedef Vec2< int > Vec2i;
+typedef Vec2< float > Vec2f;
+
+typedef Rect< int > IntRect;
+typedef Rect< float > FloatRect;
 
 //Global functions
 inline void println( std::string str ) {
@@ -28,16 +67,18 @@ enum ERROR {
 	CONTEXT_INIT_FAILED,
 	GLEW_INIT_FAILED,
 	CONFIG_LOAD_FAILED,
+	OPENGL_ERROR,
 	
 	NUM_ERRORS
 };
 
 static const char *ERROR_STRINGS[] = {
-	"Error",
+	"< Insert error here >",
 	"Window failed to initialize",
 	"OpenGL rendering context failed to initialize",
 	"GLEW failed to initialize",
-	"Configuration file failed to load"
+	"Configuration file (settings.cfg) failed to load",
+	"OpenGL error"
 };
 
 inline std::string getErrorString( ERROR err ) {
@@ -55,7 +96,7 @@ inline void error( ERROR err ) {
 	exit( err );
 }
 
-inline bool getFileContents( std::string path, std::string &fileContents ) {
+inline bool getFileContents( const std::string &path, std::string &fileContents ) {
 	std::ifstream file( path );
 	if( file.is_open() ) {
 		std::string str( ( std::istreambuf_iterator< char >( file ) ), std::istreambuf_iterator< char >() );
@@ -65,9 +106,11 @@ inline bool getFileContents( std::string path, std::string &fileContents ) {
 	return false;
 }
 
-inline bool stringToBool( std::string str ) {
-	if( str == "true" ) {
+inline bool stringToBool( const std::string &str ) {
+	if( str == "true" || str == "t" ) {
 		return true;
+	} else if( str == "false" || str == "f" ) {
+		return false;
 	}
 	return false;
 }

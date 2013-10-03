@@ -22,7 +22,7 @@ private:
 	Game( Game const& );
 	void operator=( Game const& );
 	
-	bool loadConfig( std::string path );
+	bool loadConfig( const std::string &path );
 	
 	bool running;
 	uint winWidth, winHeight;

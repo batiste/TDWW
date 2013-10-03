@@ -19,10 +19,9 @@ void Game::init() {
 	
 	//Create SDL window and OpenGL rendering context
 	SDL_Init( SDL_INIT_EVERYTHING );
-	
 	Uint32 winFlags = SDL_WINDOW_OPENGL;
 	if( fullscreen ) {
-		winFlags |= SDL_WINDOW_FULLSCREEN;
+		winFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 	}
 	window = SDL_CreateWindow( "The Dead Will Walk", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, winWidth, winHeight, winFlags );
 	if( !window ) {
@@ -33,6 +32,9 @@ void Game::init() {
 		error( CONTEXT_INIT_FAILED );
 	}
 	
+	//Initialize SDL_image
+	IMG_Init( IMG_INIT_PNG );
+	
 	//Initialize GLEW
 	glewExperimental = true;
 	GLenum glewError = glewInit();
@@ -40,7 +42,21 @@ void Game::init() {
 		error( GLEW_INIT_FAILED );
 	}
 	
+	//OpenGL init
+	glViewport( 0.0f, 0.0f, (float)winWidth, (float)winHeight );
+	glMatrixMode( GL_PROJECTION );
+	glLoadIdentity();
+	glOrtho( 0.0, winWidth, winHeight, 0.0, 1.0, -1.0 );
+	glMatrixMode( GL_MODELVIEW );
+	glLoadIdentity();	
+	glEnable( GL_TEXTURE_2D );
+	glEnable( GL_BLEND );
+	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 	glClearColor( 1.0f, 0.0f, 1.0f, 0.0f );
+	GLenum err = glGetError();
+	if( err != GL_NO_ERROR ) {
+		error( OPENGL_ERROR );
+	}
 }
 
 void Game::cleanup() {
@@ -109,7 +125,7 @@ void Game::popState() {
 	}
 }
 
-bool Game::loadConfig( std::string path ) {
+bool Game::loadConfig( const std::string &path ) {
 	std::string cfg;
 	if( getFileContents( path, cfg ) ) {
 		std::istringstream cfgStream( cfg );
