@@ -2,6 +2,9 @@
 #define _BASE_H
 
 #include <iostream>
+#include <fstream>
+#include <streambuf>
+#include <sstream>
 #include <vector>
 #include <string>
 
@@ -24,6 +27,7 @@ enum ERROR {
 	WINDOW_INIT_FAILED,
 	CONTEXT_INIT_FAILED,
 	GLEW_INIT_FAILED,
+	CONFIG_LOAD_FAILED,
 	
 	NUM_ERRORS
 };
@@ -32,7 +36,8 @@ static const char *ERROR_STRINGS[] = {
 	"Error",
 	"Window failed to initialize",
 	"OpenGL rendering context failed to initialize",
-	"GLEW failed to initialize"
+	"GLEW failed to initialize",
+	"Configuration file failed to load"
 };
 
 inline std::string getErrorString( ERROR err ) {
@@ -48,6 +53,23 @@ inline void error( ERROR err ) {
 	
 	std::cin.get();
 	exit( err );
+}
+
+inline bool getFileContents( std::string path, std::string &fileContents ) {
+	std::ifstream file( path );
+	if( file.is_open() ) {
+		std::string str( ( std::istreambuf_iterator< char >( file ) ), std::istreambuf_iterator< char >() );
+		fileContents = str;
+		return true;
+	}
+	return false;
+}
+
+inline bool stringToBool( std::string str ) {
+	if( str == "true" ) {
+		return true;
+	}
+	return false;
 }
 
 #endif //_BASE_H

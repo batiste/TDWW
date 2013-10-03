@@ -8,10 +8,23 @@ Game &Game::getInstance() {
 
 void Game::init() {
 	running = false;
+	winWidth = 640;
+	winHeight = 480;
+	fullscreen = false;
+	
+	//Load config
+	if( !loadConfig( "settings.cfg" ) ) {
+		error( CONFIG_LOAD_FAILED );
+	}
 	
 	//Create SDL window and OpenGL rendering context
 	SDL_Init( SDL_INIT_EVERYTHING );
-	window = SDL_CreateWindow( "The Dead Will Walk", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_OPENGL );
+	
+	Uint32 winFlags = SDL_WINDOW_OPENGL;
+	if( fullscreen ) {
+		winFlags |= SDL_WINDOW_FULLSCREEN;
+	}
+	window = SDL_CreateWindow( "The Dead Will Walk", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, winWidth, winHeight, winFlags );
 	if( !window ) {
 		error( WINDOW_INIT_FAILED );
 	}
@@ -94,4 +107,28 @@ void Game::popState() {
 	if( !states.empty() ) {
 		states.back()->resume();
 	}
+}
+
+bool Game::loadConfig( std::string path ) {
+	std::string cfg;
+	if( getFileContents( path, cfg ) ) {
+		std::istringstream cfgStream( cfg );
+		std::string line;
+		while( !cfgStream.eof() ) {
+			std::getline( cfgStream, line );
+			if( !line.empty() ) {
+				if( line.substr( 0, line.find_first_of( '=' ) ) == "width" ) {
+					winWidth = atoi( line.substr( line.find_first_of( '=' ) + 1 ).c_str() );
+				}
+				if( line.substr( 0, line.find_first_of( '=' ) ) == "height" ) {
+					winHeight = atoi( line.substr( line.find_first_of( '=' ) + 1 ).c_str() );
+				}
+				if( line.substr( 0, line.find_first_of( '=' ) ) == "fullscreen" ) {
+					fullscreen = stringToBool( line.substr( line.find_first_of( '=' ) + 1 ).c_str() );
+				}
+			}
+		}
+		return true;
+	}
+	return false;
 }

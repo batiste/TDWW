@@ -22,7 +22,11 @@ private:
 	Game( Game const& );
 	void operator=( Game const& );
 	
+	bool loadConfig( std::string path );
+	
 	bool running;
+	uint winWidth, winHeight;
+	bool fullscreen;
 	std::vector< GameState* > states;
 	SDL_Window *window;
 	SDL_GLContext glContext;
