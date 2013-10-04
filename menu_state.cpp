@@ -22,5 +22,5 @@ void MenuState::update() {
 }
 
 void MenuState::render() {
-	tex.render( FloatRect( 0, 0, 128, 128 ) );
+	tex.render( FloatRect( ( Game::getInstance().getResolution().x / 2 ) - 64, ( Game::getInstance().getResolution().y / 2 ) - 64, 128, 128 ) );
 }

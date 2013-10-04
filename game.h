@@ -17,6 +17,8 @@ public:
 	void switchState( GameState *state );
 	void pushState( GameState *state );
 	void popState();
+	
+	Vec2i getResolution();
 private:
 	Game() {}
 	Game( Game const& );

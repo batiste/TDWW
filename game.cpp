@@ -125,6 +125,12 @@ void Game::popState() {
 	}
 }
 
+Vec2i Game::getResolution() {
+	int width, height;
+	SDL_GetWindowSize( window, &width, &height );
+	return Vec2i( width, height );
+}
+
 bool Game::loadConfig( const std::string &path ) {
 	//This function is kind of hackish and prone to error, it should eventually be replaced
 	std::string cfg;
