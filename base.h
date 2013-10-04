@@ -57,7 +57,7 @@ typedef Rect< int > IntRect;
 typedef Rect< float > FloatRect;
 
 //Global functions
-inline void println( std::string str ) {
+inline void println( const std::string &str ) {
 	std::cout << str << std::endl;
 }
 
