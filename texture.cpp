@@ -11,12 +11,18 @@ Texture::~Texture() {
 }
 
 void Texture::loadFromFile( const std::string &path ) {
+	//Free texture in case it was already created
 	freeTexture();
 	
 	glGenTextures( 1, &textureID );
 	glBindTexture( GL_TEXTURE_2D, textureID );
 
 	SDL_Surface *surface = IMG_Load( path.c_str() );
+	if( !surface ) {
+		//Image failed to load
+		error( IMG_LOAD_FAILED, "File missing or corrupted: " + path, false );
+		return;
+	}
 	textureWidth = surface->w;
 	textureHeight = surface->h;
 	

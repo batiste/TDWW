@@ -126,6 +126,7 @@ void Game::popState() {
 }
 
 bool Game::loadConfig( const std::string &path ) {
+	//This function is kind of hackish and prone to error, it should eventually be replaced
 	std::string cfg;
 	if( getFileContents( path, cfg ) ) {
 		std::istringstream cfgStream( cfg );

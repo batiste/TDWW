@@ -68,6 +68,7 @@ enum ERROR {
 	GLEW_INIT_FAILED,
 	CONFIG_LOAD_FAILED,
 	OPENGL_ERROR,
+	IMG_LOAD_FAILED,
 	
 	NUM_ERRORS
 };
@@ -78,7 +79,8 @@ static const char *ERROR_STRINGS[] = {
 	"OpenGL rendering context failed to initialize",
 	"GLEW failed to initialize",
 	"Configuration file (settings.cfg) failed to load",
-	"OpenGL error"
+	"OpenGL error",
+	"Image failed to load"
 };
 
 inline std::string getErrorString( ERROR err ) {
@@ -88,12 +90,17 @@ inline std::string getErrorString( ERROR err ) {
 	return ERROR_STRINGS[ err ];
 }
 
-inline void error( ERROR err ) {
+inline void error( ERROR err, const std::string &details = "", bool fatal = true ) {
 	std::string errStr = "ERROR " + std::to_string( err ) + ": " + getErrorString( err ) + ".";
+	if( details.length() > 0 ) {
+		errStr += " Details: " + details + ".";
+	}
 	println( errStr );
 	
-	std::cin.get();
-	exit( err );
+	if( fatal ) {
+		std::cin.get();
+		exit( err );
+	}
 }
 
 inline bool getFileContents( const std::string &path, std::string &fileContents ) {
