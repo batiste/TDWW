@@ -13,8 +13,9 @@ void Game::init() {
 	fullscreen = false;
 	
 	//Load config
-	if( !loadConfig( "settings.cfg" ) ) {
-		error( CONFIG_LOAD_FAILED );
+	std::string settingsPath( "settings.cfg" );
+	if( !loadConfig( settingsPath ) ) {
+		error( CONFIG_LOAD_FAILED, "Check to make sure you have a \"" + settingsPath + "\" file in your install directory" );
 	}
 	
 	//Create SDL window and OpenGL rendering context
@@ -53,9 +54,10 @@ void Game::init() {
 	glEnable( GL_BLEND );
 	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 	glClearColor( 1.0f, 0.0f, 1.0f, 0.0f );
-	GLenum err = glGetError();
-	if( err != GL_NO_ERROR ) {
-		error( OPENGL_ERROR );
+	GLenum glErr = glGetError();
+	if( glErr != GL_NO_ERROR ) {
+		std::string glErrStr( (const char*)gluErrorString( glErr ) );
+		error( OPENGL_ERROR, glErrStr );
 	}
 }
 
@@ -132,7 +134,7 @@ Vec2i Game::getResolution() {
 }
 
 bool Game::loadConfig( const std::string &path ) {
-	//This function is kind of hackish and prone to error, it should eventually be replaced
+	//This function is kind of hackish and prone to error, it should eventually be replaced or improved
 	std::string cfg;
 	if( getFileContents( path, cfg ) ) {
 		std::istringstream cfgStream( cfg );

@@ -78,7 +78,7 @@ static const char *ERROR_STRINGS[] = {
 	"Window failed to initialize",
 	"OpenGL rendering context failed to initialize",
 	"GLEW failed to initialize",
-	"Configuration file (settings.cfg) failed to load",
+	"Configuration file failed to load",
 	"OpenGL error",
 	"Image failed to load"
 };
@@ -98,6 +98,7 @@ inline void error( ERROR err, const std::string &details = "", bool fatal = true
 	println( errStr );
 	
 	if( fatal ) {
+		println( "Press ENTER to exit..." );
 		std::cin.get();
 		exit( err );
 	}

@@ -30,7 +30,9 @@ void Texture::loadFromFile( const std::string &path ) {
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
 	
+	//Unbind texture and free surface
 	glBindTexture( GL_TEXTURE_2D, 0 );
+	SDL_FreeSurface( surface );
 }
 
 void Texture::freeTexture() {
@@ -51,9 +53,9 @@ void Texture::render( FloatRect rect ) {
 		
 		glBegin( GL_QUADS );
 			glTexCoord2f( 0.0f, 0.0f ); glVertex2f( 0.0f, 0.0f );
-			glTexCoord2f( 1.0f, 0.0f ); glVertex2f( textureWidth, 0.0f );
-			glTexCoord2f( 1.0f, 1.0f ); glVertex2f( textureWidth, textureHeight );
-			glTexCoord2f( 0.0f, 1.0f ); glVertex2f( 0.0f, textureHeight );
+			glTexCoord2f( 1.0f, 0.0f ); glVertex2f( rect.w, 0.0f );
+			glTexCoord2f( 1.0f, 1.0f ); glVertex2f( rect.w, rect.h );
+			glTexCoord2f( 0.0f, 1.0f ); glVertex2f( 0.0f, rect.h );
 		glEnd();
 	}
 }
