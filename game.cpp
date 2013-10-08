@@ -33,6 +33,8 @@ void Game::init() {
 		error( CONTEXT_INIT_FAILED );
 	}
 	
+	SDL_GL_SetSwapInterval( 0 );
+	
 	//Initialize SDL_image
 	IMG_Init( IMG_INIT_PNG );
 	
