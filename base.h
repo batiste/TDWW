@@ -21,7 +21,7 @@ template< typename T >
 class Vec2 {
 public:
 	Vec2() {
-		Vec2( 0, 0, 0, 0 );
+		Vec2( 0, 0 );
 	}
 	Vec2( T x, T y ) {
 		this->x = x;
